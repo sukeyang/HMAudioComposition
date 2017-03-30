@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "HMAudioComposition.h"
+#import "ExtAudioFileMixer.h"
+#import "PcmPlayer.h"
 
 @interface ViewController ()
 
@@ -49,6 +51,21 @@
     NSLog(@"停止录音,保存文件的路径为:%@",self.recoder.url.absoluteString);
 }
 
+- (void)playUriAudioWithUrl:(NSString *)urlPath {
+    if (self.player.isPlaying) {
+        [self.player stop];
+        self.player = nil;
+    }
+    //    if (urlPath) {
+    //        _recordPath = urlPath;
+    //    }
+    //    TTSConfig *instance = [TTSConfig sharedInstance];
+    NSError *error = [[NSError alloc] init];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+    self.player = [[PcmPlayer alloc] initWithFilePath:urlPath sampleRate:16000 ];
+    [self.player play];
+}
+
 - (IBAction)compose {
     
 //  文档路径
@@ -58,48 +75,58 @@
 //  获取文档目录保存所有 .AAC 格式的音频文件URL
     NSMutableArray *sourceURLs = [NSMutableArray array];
     
+    NSString *fileNameOne = nil;
+    NSMutableData *comData = [[NSMutableData alloc] init];
 //  遍历
     for (NSString *fileName in fileNames) {
         NSLog(@"源文件:%@",fileName);
         
-        if (![fileName.pathExtension isEqualToString:@"AAC"]) {
+        if (![fileName.pathExtension isEqualToString:@"pcm"]) {
             continue;
         }
         
 //      文件路径
         NSString *filePath = [docPath stringByAppendingPathComponent:fileName];
 //      文件的URL
+        fileNameOne = filePath;
         NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+        
+        NSData *audioData = [NSData dataWithContentsOfFile:filePath];
+        [comData appendData:audioData];
 //      源文件数组
         [sourceURLs addObject:fileURL];
     }
     
+        NSString *destPath = [docPath stringByAppendingPathComponent:@"dest.pcm"];
+     NSFileManager* fileManager = [NSFileManager defaultManager];
+    [comData writeToFile:destPath atomically:YES];
 //  目标文件路径
     
-
     
-    NSString *destPath = [docPath stringByAppendingPathComponent:@"dest.m4a"];
+    [self playUriAudioWithUrl:destPath];
+    
+
     NSError *error = nil;
 //  如果目标文件已经存在删除目标文件
-    if ([[NSFileManager defaultManager] fileExistsAtPath:destPath]) {
-        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:destPath error:&error];
-        if (!success) {
-            NSLog(@"删除文件失败:%@",error);
-        }else{
-            NSLog(@"删除文件:%@成功",destPath);
-        }
-    }
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:destPath]) {
+//        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:destPath error:&error];
+//        if (!success) {
+//            NSLog(@"删除文件失败:%@",error);
+//        }else{
+//            NSLog(@"删除文件:%@成功",destPath);
+//        }
+//    }
 //  目录文件URL
    self.destURL = [NSURL fileURLWithPath:destPath];
 //  导出音频
-    [HMAudioComposition sourceURLs:sourceURLs composeToURL:self.destURL completed:^(NSError *error) {
-        if (error) {
-            NSLog(@"合并音频文件失败:%@",error);
-        }else{
-            NSLog(@"合并音频文件成功");
-        }
-    }];
-    
+//    [HMAudioComposition sourceURLs:sourceURLs composeToURL:self.destURL completed:^(NSError *error) {
+//        if (error) {
+//            NSLog(@"合并音频文件失败:%@",error);
+//        }else{
+//            NSLog(@"合并音频文件成功");
+//        }
+//    }];
+//    [ExtAudioFileMixer mixAudio:sourceURLs[0] andAudio:sourceURLs[1] toFile:destPath preferedSampleRate:0];
     
 }
 
@@ -130,7 +157,7 @@
     }
     static int count = 0;
     count++;
-    NSString *fileName = [NSString stringWithFormat:@"recoder_%d.AAC",count];
+    NSString *fileName = [NSString stringWithFormat:@"recoder_%d.pcm",count];
     //  把录音文件保存在沙盒中
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:fileName];
     //  路径转换为URL
@@ -142,7 +169,7 @@
     NSMutableDictionary *setting = [NSMutableDictionary dictionary];
     //2.够着  录音参数
     // 音频格式
-    setting[AVFormatIDKey] = @(kAudioFormatMPEG4AAC);
+    setting[AVFormatIDKey] = @(kAudioFormatLinearPCM);
     //    文件后缀必须是: AAC,必须是大写
     // 音频采样率
     setting[AVSampleRateKey] = @(16000.0);

@@ -14,6 +14,8 @@
 		435BB2201D46175D005C89F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435BB21F1D46175D005C89F5 /* Assets.xcassets */; };
 		435BB2231D46175D005C89F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 435BB2211D46175D005C89F5 /* LaunchScreen.storyboard */; };
 		435BB2341D4618F9005C89F5 /* HMAudioComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 435BB2331D4618F9005C89F5 /* HMAudioComposition.m */; };
+		756097071E8D3C8B009AB7DB /* ExtAudioFileMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 756097061E8D3C8B009AB7DB /* ExtAudioFileMixer.m */; };
+		7560970A1E8D4F0B009AB7DB /* PcmPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 756097091E8D4F0B009AB7DB /* PcmPlayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,10 @@
 		435BB2241D46175D005C89F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		435BB2321D4618F9005C89F5 /* HMAudioComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMAudioComposition.h; sourceTree = "<group>"; };
 		435BB2331D4618F9005C89F5 /* HMAudioComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMAudioComposition.m; sourceTree = "<group>"; };
+		756097051E8D3C8B009AB7DB /* ExtAudioFileMixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtAudioFileMixer.h; sourceTree = "<group>"; };
+		756097061E8D3C8B009AB7DB /* ExtAudioFileMixer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtAudioFileMixer.m; sourceTree = "<group>"; };
+		756097081E8D4F0B009AB7DB /* PcmPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PcmPlayer.h; sourceTree = "<group>"; };
+		756097091E8D4F0B009AB7DB /* PcmPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PcmPlayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +92,12 @@
 		435BB2311D4618F9005C89F5 /* AudioTools */ = {
 			isa = PBXGroup;
 			children = (
+				756097081E8D4F0B009AB7DB /* PcmPlayer.h */,
+				756097091E8D4F0B009AB7DB /* PcmPlayer.m */,
 				435BB2321D4618F9005C89F5 /* HMAudioComposition.h */,
 				435BB2331D4618F9005C89F5 /* HMAudioComposition.m */,
+				756097051E8D3C8B009AB7DB /* ExtAudioFileMixer.h */,
+				756097061E8D3C8B009AB7DB /* ExtAudioFileMixer.m */,
 			);
 			path = AudioTools;
 			sourceTree = "<group>";
@@ -165,7 +175,9 @@
 				435BB21B1D46175D005C89F5 /* ViewController.m in Sources */,
 				435BB2341D4618F9005C89F5 /* HMAudioComposition.m in Sources */,
 				435BB2181D46175D005C89F5 /* AppDelegate.m in Sources */,
+				7560970A1E8D4F0B009AB7DB /* PcmPlayer.m in Sources */,
 				435BB2151D46175D005C89F5 /* main.m in Sources */,
+				756097071E8D3C8B009AB7DB /* ExtAudioFileMixer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +326,7 @@
 				435BB2291D46175D005C89F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

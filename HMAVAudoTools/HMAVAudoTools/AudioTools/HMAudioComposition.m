@@ -40,7 +40,10 @@
         //      atTime:源音频插入到目标文件开始时间
         //      error: 插入失败记录错误
         //      返回:YES表示插入成功,`NO`表示插入失败
-        BOOL success = [compositionAudioTrack insertTimeRange:audio_timeRange ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:beginTime error:&error];
+        AVAssetTrack *assetTrack1 = [[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0];
+        AVAssetTrack *assetTrack2 = [[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0];
+        
+        BOOL success = [compositionAudioTrack insertTimeRange:audio_timeRange ofTrack:assetTrack1 atTime:beginTime error:&error];
 //      如果插入失败,打印插入失败信息
         if (!success) {
             NSLog(@"插入音频失败: %@",error);
@@ -51,11 +54,11 @@
     
     
 // 创建一个导入M4A格式的音频的导出对象
-    AVAssetExportSession* assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetAppleM4A];
+    AVAssetExportSession* assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetPassthrough];
 //  导入音视频的URL
     assetExport.outputURL = toURL;
 //  导出音视频的文件格式
-    assetExport.outputFileType = @"com.apple.m4a-audio";
+    assetExport.outputFileType = AVFileTypeAppleM4A;
 //  导入出
     [assetExport exportAsynchronouslyWithCompletionHandler:^{
 //      分发到主线程
